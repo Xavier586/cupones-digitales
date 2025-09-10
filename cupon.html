@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cupón Digital</title>
+    <style>
+        /* Reset de márgenes y altura completa */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        #cupon {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        #qr {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+
+        strong {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="cupon">
+        <h1>Cupón Digital</h1>
+        <img id="qr" src="" alt="QR">
+        <p><strong>Código:</strong> <span id="codigo"></span></p>
+        <p><strong>Producto:</strong> <span id="producto"></span></p>
+        <p><strong>Vigencia:</strong> <span id="vigencia"></span></p>
+        <p><strong>Cliente:</strong> <span id="cliente"></span></p>
+        <p><strong>Locales:</strong> <span id="locales"></span></p>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const codigo = params.get('codigo');
+        const producto = params.get('producto');
+        const vigencia = params.get('vigencia');
+        const cliente = params.get('cliente');
+        const locales = params.get('locales');
+
+        // Mostrar datos
+        document.getElementById('codigo').textContent = codigo;
+        document.getElementById('producto').textContent = producto;
+        document.getElementById('vigencia').textContent = vigencia;
+        document.getElementById('cliente').textContent = cliente;
+        document.getElementById('locales').textContent = locales;
+
+        // Generar QR con API QRServer
+        const textoQR = `Código: ${codigo}\nProducto: ${producto}\nVigencia: ${vigencia}\nCliente: ${cliente}\nLocales: ${locales}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(textoQR)}`;
+        document.getElementById('qr').src = qrUrl;
+    </script>
+</body>
+</html>
